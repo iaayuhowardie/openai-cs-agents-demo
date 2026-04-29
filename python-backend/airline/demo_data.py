@@ -81,5 +81,6 @@ MOCK_ITINERARIES = {
 
 # Default scenario to load when no confirmation number is provided by the user.
 # Switch to "on_time" to test the happy-path flow instead.
-# I prefer starting with the disrupted scenario since it exercises more agent logic.
+# I prefer starting with the disrupted scenario since it exercises more agent
+# handoffs and tool calls — more interesting for learning purposes.
 DEFAULT_SCENARIO = "disrupted"
