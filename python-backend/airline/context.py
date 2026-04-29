@@ -14,7 +14,7 @@ class AirlineAgentContext(BaseModel):
     account_number: str | None = None  # Account number associated with the customer
     itinerary: list[dict[str, str]] | None = None  # Internal only (not surfaced to UI)
     baggage_claim_id: str | None = None  # Internal only (not surfaced to UI)
-    compensation_case_id: str | None = None
+    compensation_case_id: str | None = None  # Internal only (not surfaced to UI)
     scenario: str | None = None
     vouchers: list[str] | None = None
     special_service_note: str | None = None
@@ -43,7 +43,8 @@ def create_initial_context() -> AirlineAgentContext:
 def public_context(ctx: AirlineAgentContext) -> dict:
     """
     Return a filtered view of the context for UI display.
-    Hides internal fields like itinerary and baggage_claim_id, and only shows vouchers when granted.
+    Hides internal fields like itinerary, baggage_claim_id, compensation_case_id,
+    and scenario. Only surfaces vouchers once they have been granted.
     """
     data = ctx.model_dump()
     hidden_keys = {
@@ -58,4 +59,6 @@ def public_context(ctx: AirlineAgentContext) -> dict:
     # Only surface vouchers once granted
     if not data.get("vouchers"):
         data.pop("vouchers", None)
+    # Strip out any remaining None values to keep the UI payload clean
+    data = {k: v for k, v in data.items() if v is not None}
     return data
