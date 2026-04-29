@@ -81,16 +81,5 @@ MOCK_ITINERARIES = {
 
 # Default scenario to load when no confirmation number is provided by the user.
 # Switch to "on_time" to test the happy-path flow instead.
+# I prefer starting with the disrupted scenario since it exercises more agent logic.
 DEFAULT_SCENARIO = "disrupted"
-
-
-def apply_itinerary_defaults(ctx: AirlineAgentContext, scenario_key: str | None = None) -> None:
-    """Populate the context with a demo itinerary if missing."""
-    if scenario_key is None:
-        scenario_key = DEFAULT_SCENARIO
-
-    if ctx.confirmation_number is None and scenario_key in MOCK_ITINERARIES:
-        itinerary = deepcopy(MOCK_ITINERARIES[scenario_key])
-        ctx.confirmation_number = itinerary["confirmation_number"]
-        ctx.passenger_name = itinerary["passenger_name"]
-        ctx.itinerary = itinerary
